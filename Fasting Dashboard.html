@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ayyāmal Ṣawm - أيام الصوم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--td:#0e3d2e;--tm:#123a30;--bd:#163b50;--g:#d4af5f;--gw:#b8953e;--gf:#1a5c3a;--cr:#f0ebe2;--bt:#5e6b78;--pbg:#f7f5f0}
+*{margin:0;padding:0;box-sizing:border-box}
+button,.tab-btn,.fbtn,.pg-btn,.back-btn,.ynav button,.ynav-btn,.cal-day{touch-action:manipulation;-webkit-tap-highlight-color:rgba(212,175,95,.15);-webkit-user-select:none;user-select:none}
+body{font-family:'Inter',sans-serif;background:var(--pbg);color:#333;-webkit-font-smoothing:antialiased;min-height:100vh}
+#app{display:flex;flex-direction:column;min-height:100vh}
+[contenteditable]{outline:none;cursor:text;-webkit-spell-check:false}
+[contenteditable]:hover{background:rgba(212,175,95,.06);border-radius:3px}
+[contenteditable]:focus{background:rgba(212,175,95,.1);border-radius:3px}
+
+/* HEADER — Islamic geometric pattern + gold dust */
+.hdr{background:linear-gradient(165deg,#0e3d2e 0%,#123a30 20%,#163b50 50%,#123a30 80%,#0e3d2e 100%);padding:18px 24px 8px;text-align:center;color:#fff;position:relative;overflow:visible}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 40%,rgba(26,92,58,.35) 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(26,92,58,.25) 0%,transparent 50%),radial-gradient(ellipse at center 25%,rgba(212,175,95,.06) 0%,transparent 55%);pointer-events:none;z-index:0}
+.hdr::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(circle at 10% 50%,rgba(26,92,58,.15) 0%,transparent 35%),radial-gradient(circle at 90% 50%,rgba(26,92,58,.15) 0%,transparent 35%),radial-gradient(circle at 50% 80%,rgba(212,175,95,.04) 0%,transparent 40%);pointer-events:none;z-index:0}
+.hdr>*{position:relative;z-index:2}
+.hdr-pattern{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.04;background-image:repeating-conic-gradient(from 0deg at 50% 50%,rgba(212,175,95,1) 0deg 30deg,transparent 30deg 60deg);background-size:60px 60px;pointer-events:none;z-index:0}
+.bis{font-family:'Amiri',serif;color:var(--g);font-size:20px;margin-bottom:4px;text-shadow:0 0 20px rgba(212,175,95,.25)}
+.ttl{font-family:'Playfair Display',serif;font-weight:900;font-size:28px;margin-bottom:2px;letter-spacing:-.5px;text-shadow:0 2px 12px rgba(0,0,0,.15)}
+.ttl em{color:var(--g);font-style:normal;text-shadow:0 0 18px rgba(212,175,95,.3)}
+.gd{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);margin:6px auto}
+.sub{font-size:11px;font-weight:300;opacity:.8;letter-spacing:.5px}
+.sub b{font-weight:600}
+
+/* QUOTE ROW */
+.qr{display:flex;gap:12px;justify-content:center;margin:12px auto 0;max-width:780px}
+.mb{flex:1;max-width:370px;border:1px solid rgba(212,175,95,.3);border-radius:50% 50% 5px 5px/28% 28% 5px 5px;padding:18px 14px 10px;position:relative;background:rgba(255,255,255,.03)}
+.mb .st{position:absolute;top:-10px;left:50%;transform:translateX(-50%);color:var(--g);font-size:14px;background:var(--td);padding:0 6px}
+.mb .aq{font-family:'Amiri',serif;color:var(--g);font-size:14px;line-height:1.6;margin-bottom:5px}
+.mb .eq{font-style:italic;font-size:10px;color:rgba(255,255,255,.8);line-height:1.4;margin-bottom:4px}
+.mb .rf{font-size:8px;text-transform:uppercase;letter-spacing:1.2px;color:var(--g);font-weight:600}
+
+/* HEADER SUB-PANELS (inside .hdr, toggled by tab) */
+.hdr-sub{padding:4px 24px 14px;position:relative;z-index:2}
+.hdr-sub .gd-sub{width:60px;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,95,.5),transparent);margin:4px auto 10px}
+
+/* YEAR NAV */
+.ynav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+.ynav button{background:rgba(255,255,255,.08);border:1px solid rgba(212,175,95,.35);color:var(--g);border-radius:6px;padding:4px 14px;cursor:pointer;font-size:16px;font-weight:700}
+.ynav button:hover{background:rgba(212,175,95,.12)}
+.ynum{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;letter-spacing:2px}
+.ynum span{font-size:11px;font-weight:400;font-family:'Inter',sans-serif}
+.yrng{font-size:9px;opacity:.6;margin-top:1px}
+.back-btn{background:var(--g);color:var(--td);border:none;border-radius:5px;padding:3px 12px;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+
+/* TABS */
+.tab-bar{display:flex;justify-content:center;gap:0;margin:8px auto 0;max-width:480px;background:rgba(255,255,255,.06);border-radius:8px;padding:3px;border:1px solid rgba(212,175,95,.25);position:relative;z-index:3}
+.tab-btn{flex:1;padding:7px 16px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.4px;color:rgba(255,255,255,.55);background:transparent;border:none;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;position:relative;z-index:3}
+.tab-btn:hover{color:rgba(255,255,255,.8);background:rgba(212,175,95,.08)}
+.tab-btn.active{background:var(--g);color:var(--td);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.tab-panel{display:none}
+.tab-panel.active{display:flex;flex-direction:column;flex:1}
+
+/* HADITH CARDS */
+.hadith-grid{max-width:1140px;margin:0 auto;padding:0 24px}
+.hadith-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.hcard{background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 3px 12px rgba(0,0,0,.05);overflow:hidden;border-top:3px solid var(--g);position:relative}
+.hcard.foundational{border-top:3px solid #14713a;box-shadow:0 1px 2px rgba(0,0,0,.04),0 3px 12px rgba(0,0,0,.05),0 0 0 2px rgba(20,113,58,.2)}
+.hcard-head{padding:10px 14px 8px;border-bottom:1px solid #eee8de;display:flex;align-items:center;justify-content:space-between}
+.hcard-num{width:26px;height:26px;border-radius:50%;background:var(--g);color:var(--td);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0}
+.hcard.foundational .hcard-num{background:#14713a;color:#fff}
+.hcard-title{flex:1;margin-left:10px;font-weight:700;font-size:11px;color:#1a1a1a}
+.hcard-badge{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:3px;background:#14713a;color:#fff}
+.hcard-body{padding:12px 14px}
+.hcard-ar{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:14px;line-height:1.8;color:#333;margin-bottom:10px;padding:8px 12px;background:rgba(212,175,95,.04);border-radius:6px;border-right:3px solid var(--g)}
+.hcard-en{font-size:10.5px;font-style:italic;line-height:1.6;color:#555;margin-bottom:8px}
+.hcard-use{font-size:9px;color:#1a5276;line-height:1.5;padding:6px 10px;background:rgba(26,82,118,.04);border-radius:4px;margin-bottom:6px}
+.hcard-use strong{color:#1a5276}
+.hcard-src{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--gw);text-align:right}
+.insight-card{background:linear-gradient(135deg,var(--td),var(--tm),var(--bd));border-radius:12px;padding:20px 24px;color:#fff;margin-top:12px}
+.insight-card h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--g);margin-bottom:12px;text-align:center}
+.insight-table{width:100%;border-collapse:collapse;font-size:11px}
+.insight-table th{text-align:left;padding:8px 12px;border-bottom:1px solid rgba(212,175,95,.3);color:var(--g);font-size:9px;text-transform:uppercase;letter-spacing:.8px}
+.insight-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.85)}
+.insight-table td:first-child{font-weight:600}
+.insight-table .ratio{color:var(--g);font-weight:700}
+@media(max-width:900px){.hadith-list{grid-template-columns:1fr}}
+
+/* ORNAMENT */
+.od{text-align:center;color:var(--g);font-size:9px;letter-spacing:6px;padding:4px 0}
+
+/* FILTER BAR */
+.nfc{max-width:1140px;margin:0 auto;padding:0 24px}
+.filter-bar{display:flex;gap:1px;margin-bottom:8px;border-radius:10px;border:1px solid rgba(212,175,95,.35);overflow:hidden;background:rgba(212,175,95,.12)}
+.fbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;background:linear-gradient(135deg,var(--td),var(--tm),var(--bd));color:rgba(255,255,255,.85);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap;border:none;-webkit-tap-highlight-color:rgba(212,175,95,.2);position:relative;z-index:2}
+.fbtn:hover{background:linear-gradient(135deg,#143d30,#174538,#1a4a5a)}
+.fbtn.active{box-shadow:inset 0 0 20px rgba(212,175,95,.08)}
+.fbtn.active[data-filter="tatawwa"]{background:linear-gradient(135deg,#122e4a,#1a5276,#122e4a);border-color:rgba(26,82,118,.6)}
+.fbtn.active[data-filter="sunnah"]{background:linear-gradient(135deg,#3d3210,#7a6520,#3d3210);border-color:rgba(122,101,32,.6)}
+.fbtn.active[data-filter="fardh"]{background:linear-gradient(135deg,#0a3820,#14713a,#0a3820);border-color:rgba(20,113,58,.6)}
+.fbtn.active[data-filter="all"]{background:linear-gradient(135deg,#1a1a2e,#2d2d44,#1a1a2e);border-color:rgba(212,175,95,.45)}
+.fbtn-pill{border-radius:5px;padding:3px 8px;font-size:8px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.fbtn-pill.fp-tatawwa{background:#1a5276}
+.fbtn-pill.fp-sunnah{background:#7a6520}
+.fbtn-pill.fp-fardh{background:#14713a}
+.fbtn-date{font-size:11px;color:rgba(255,255,255,.9)}
+.fbtn-cd{font-size:9px;color:rgba(255,255,255,.5)}
+.fbtn-cd strong{color:var(--g);font-weight:700}
+/* Filter states */
+.fr.fdim,.fr-whole.fdim{display:none}
+.mc.fdim-card{display:none}
+/* Month cards with no visible rows after filter */
+.mc.fhide-empty{display:none}
+.nfi .sp{font-size:9px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;color:#fff}
+
+/* CONTENT */
+.ca{max-width:1140px;margin:0 auto;padding:0 24px}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;transition:max-height .3s ease}
+/* Pagination */
+.pg-wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+.pg-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 0 2px}
+.pg-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--td),var(--tm),var(--bd));color:rgba(255,255,255,.9);border:1px solid rgba(212,175,95,.4);border-radius:8px;padding:7px 18px;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.4px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.pg-btn:hover{border-color:var(--g);box-shadow:0 2px 12px rgba(212,175,95,.2);transform:translateY(-1px)}
+.pg-btn i{font-size:10px}
+.pg-info{font-family:'Inter',sans-serif;font-size:10px;color:#999;font-weight:500}
+
+/* MONTH CARD */
+.mc{background:#fff;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.05),inset 0 1px 0 rgba(212,175,95,.12);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.mc.cur{outline:2.5px solid #00838f;outline-offset:-1px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.06),inset 0 1px 0 rgba(0,131,143,.15),0 0 0 3px rgba(0,131,143,.2);overflow:visible}
+.mc .nb{position:absolute;top:-8px;left:-4px;background:#00838f;color:#fff;border-radius:4px;padding:2px 8px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;z-index:3;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+
+/* Card Header */
+.ch{padding:6px 8px;border-bottom:1px solid #eee8de;display:flex;align-items:center;justify-content:space-between}
+.chl{display:flex;align-items:center;gap:5px}
+.mnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:10px;flex-shrink:0}
+.mname{display:flex;flex-direction:column;gap:1px}
+.mname-row{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.badge-row{display:flex;gap:2px;align-items:center;margin-top:1px}
+.men{font-weight:700;font-size:10.5px;color:#1a1a1a;white-space:nowrap}
+.mar{font-family:'Amiri',serif;font-size:12px;line-height:1.2;white-space:nowrap}
+.cic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* Fast Items */
+.fi{padding:1px 8px 4px;flex:1;display:flex;flex-direction:column}
+.fr{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid #f0ede7;cursor:pointer;transition:background .15s}
+.fr:hover{background:rgba(212,175,95,.06);border-radius:4px}
+.fr:last-child{border-bottom:none}
+.gcal-icon{font-size:10px;color:#ccc;transition:color .15s;flex-shrink:0}
+.fr:hover .gcal-icon{color:var(--g)}
+
+/* Harvey Ball — 22px outer, 18px inner */
+.hb{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.hb .in{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;position:relative;z-index:2}
+
+/* Segment Pill */
+.sg{border-radius:3px;padding:1px 5px;font-size:7px;font-weight:700;color:#fff;white-space:nowrap;min-width:42px;text-align:center;word-spacing:2px;letter-spacing:.3px}
+
+.finfo{flex:1;min-width:50px}
+.fh{font-weight:600;font-size:10px;color:#1a1a1a;white-space:nowrap}
+.fgi{text-align:right;flex-shrink:1;min-width:0}
+.fday{font-weight:600;font-size:8.5px;opacity:.75}
+
+/* Fardh / Sunnah distinction */
+.mc.fardh{background:#fff}
+.mc.fardh .ch{border-bottom-color:#eee8de}
+.mc.sunnah{background:#fff}
+.mc.sunnah .ch{border-bottom-color:#eee8de}
+.type-badge{display:inline-block;font-family:'Inter',sans-serif;font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;line-height:1;padding:2px 4px;border-radius:3px}
+.type-badge.fardh-badge{background:#14713a;color:#fff}
+.type-badge.sunnah-badge{background:#7a6520;color:#fff}
+.type-badge.tatawwa-badge{background:#1a5276;color:#fff}
+.type-badge.faqah-badge{background:#7b2d8e;color:#fff}
+.type-badge.fna-badge{background:#b22828;color:#fff}
+
+/* Ramadan / Sha'ban full-month tiles */
+.ram{text-align:center;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60px}
+.ram i{font-size:16px;color:var(--g);margin-bottom:3px;display:block}
+.ram .rl{font-family:'Playfair Display',serif;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;text-shadow:0 1px 2px rgba(212,175,95,.15)}
+.ram .rs{font-size:8px;color:var(--bt);margin-top:1px}
+.ram .rlabel{font-weight:900}
+.ram .rdot{font-size:16px;vertical-align:middle;margin:0 2px}
+.ram .rdays{font-weight:700;color:#8b7328 !important;font-size:12px}
+
+/* Tashriq / Restricted Days */
+.tash{padding:6px 12px;border-top:1px dashed rgba(180,40,40,.2)}
+.tash-title{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#b22828;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.tash-title i{font-size:10px}
+.tash-day{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:10px;color:#b22828;border-bottom:1px solid rgba(178,40,40,.08)}
+.tash-day:last-child{border-bottom:none}
+.tash-day .td-hb{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tash-day .td-hb .td-in{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#b22828}
+.tash-day .td-label{font-weight:600}
+.tash-day .td-date{font-weight:400;opacity:.7;margin-left:auto}
+
+/* CALENDAR VIEW — Tab 3 */
+.cal-grid{max-width:1400px;margin:0 auto;padding:0 20px;position:relative}
+.cal-grid::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;opacity:.015;background-image:repeating-conic-gradient(from 0deg at 50% 50%,rgba(212,175,95,1) 0deg 30deg,transparent 30deg 60deg);background-size:80px 80px;pointer-events:none;border-radius:12px;z-index:0}
+.cal-months{position:relative;z-index:1}
+.cal-months{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cal-mo{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.05),0 3px 10px rgba(0,0,0,.05);overflow:visible;border-top:3px solid #999}
+.cal-mo-hd{padding:8px 12px 7px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee8de}
+.cal-mo-name{font-weight:700;font-size:12px;color:#1a1a1a}
+.cal-mo-ar{font-family:'Amiri',serif;font-size:14px;opacity:.7}
+.cal-mo-range{font-size:8.5px;color:#999;font-weight:500;margin-top:1px}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;padding:6px 8px 3px;gap:0}
+.cal-dow span{font-size:8.5px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px;padding:3px 0}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;padding:3px 8px 10px;gap:4px 3px}
+.cal-day{position:relative;padding:5px 3px;font-size:11.5px;font-weight:500;color:#555;border-radius:6px;cursor:default;min-height:30px;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.cal-day:not(.empty):hover{transform:scale(1.15);z-index:5}
+.cal-day.empty{visibility:hidden}
+.cal-day.has-fast{font-weight:700;color:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.cal-day.cat-fardh{background:#14713a}
+.cal-day.cat-sunnah{background:#7a6520}
+.cal-day.cat-tatawwa{background:#1a5276}
+.cal-day.cat-faqah{background:#7b2d8e}
+.cal-day.cat-notallowed{background:#b22828}
+.cal-day.cat-sunnah-whole{background:linear-gradient(135deg,#7a6520,#9a8530);color:#fff}
+.cal-day.today-mark{outline:2.5px solid #00838f;outline-offset:0px;z-index:2;box-shadow:0 0 0 3px rgba(0,131,143,.2)}
+/* Tooltip */
+.cal-day .cal-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#0e2a1e,#123a30,#163b50);color:#fff;font-size:10px;padding:10px 14px;border-radius:10px;z-index:20;box-shadow:0 4px 16px rgba(0,0,0,.35);line-height:1.5;min-width:160px;max-width:260px;white-space:normal;text-align:center;pointer-events:none;border:1px solid rgba(212,175,95,.3)}
+.cal-day .cal-tip .tip-cat{display:inline-block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px;color:#fff;margin-bottom:4px}
+.cal-day .cal-tip .tip-name{font-weight:600;color:var(--g);font-size:11px;margin-bottom:3px}
+.cal-day .cal-tip .tip-date{font-size:9px;color:rgba(255,255,255,.6)}
+.cal-day .cal-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#163b50}
+.cal-day:hover .cal-tip{display:block}
+/* Filter dimming for calendar view */
+.cal-day.cal-fdim{opacity:.06}
+@media(max-width:900px){.cal-months{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.cal-months{grid-template-columns:repeat(2,1fr)}.cal-days{gap:2px 1px}.cal-day{min-height:24px;font-size:10px}}
+
+/* FOOTER */
+.ftr{background:linear-gradient(165deg,#0e3d2e 0%,#123a30 20%,#163b50 50%,#123a30 80%,#0e3d2e 100%);padding:12px 24px 10px;margin-top:auto;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.ftr::before{content:'';position:absolute;top:-40%;left:-15%;right:-15%;bottom:0;background:radial-gradient(ellipse at 30% 60%,rgba(26,92,58,.35) 0%,transparent 50%),radial-gradient(ellipse at 70% 40%,rgba(26,92,58,.25) 0%,transparent 50%),radial-gradient(ellipse at center 75%,rgba(212,175,95,.06) 0%,transparent 55%);pointer-events:none}
+.ftr::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(circle at 10% 50%,rgba(26,92,58,.15) 0%,transparent 35%),radial-gradient(circle at 90% 50%,rgba(26,92,58,.15) 0%,transparent 35%),radial-gradient(circle at 50% 20%,rgba(212,175,95,.04) 0%,transparent 40%);pointer-events:none}
+.ftr>*{position:relative;z-index:1}
+.ftr-pattern{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.04;background-image:repeating-conic-gradient(from 0deg at 50% 50%,rgba(212,175,95,1) 0deg 30deg,transparent 30deg 60deg);background-size:60px 60px;pointer-events:none}
+.ftr-inner{max-width:1140px;margin:0 auto}
+/* Legend row */
+.ftr-legend{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,95,.2)}
+.ftr-leg-item{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.75);font-weight:500;letter-spacing:.3px}
+.ftr-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 4px rgba(0,0,0,.2)}
+/* Category breakdown */
+.ftr-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,95,.2)}
+.ftr-cat{background:rgba(255,255,255,.05);border-radius:8px;padding:10px 12px;text-align:center;border:1px solid rgba(255,255,255,.08)}
+.ftr-cat-pill{display:inline-block;border-radius:4px;padding:2px 8px;font-size:7.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.ftr-cat-count{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--g);line-height:1}
+.ftr-cat-label{font-size:8.5px;color:rgba(255,255,255,.55);margin-top:3px;line-height:1.3}
+/* Attribution row */
+.ftr-attr-row{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;text-align:center}
+.ftr-attr{font-size:9px;color:rgba(255,255,255,.5);white-space:nowrap}
+.ftr-attr strong{color:var(--g);font-weight:600}
+.ftr-dot{color:rgba(212,175,95,.4);font-size:8px}
+
+@media(min-width:1400px){.mg{grid-template-columns:repeat(4,1fr)}.ca{max-width:1400px}}
+@media(max-width:900px){.mg{grid-template-columns:repeat(2,1fr)}.qr{flex-direction:column;align-items:center}.nfi{flex-wrap:wrap}.filter-bar{display:grid;grid-template-columns:1fr 1fr;gap:2px}.fbtn{min-width:0;flex-direction:column;white-space:normal;text-align:center}.ftr-cats{grid-template-columns:repeat(3,1fr);gap:8px}}
+@media(max-width:600px){.mg{grid-template-columns:1fr}.mname{flex-wrap:wrap}.ch{padding:8px}.fi{padding:2px 8px 6px}.filter-bar{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:8px}.fbtn{min-width:0;padding:8px 6px;gap:3px;min-height:44px;flex-direction:column;align-items:center;justify-content:center;text-align:center;white-space:normal}.fbtn-pill{font-size:7px;padding:2px 6px}.fbtn-date{font-size:9px;white-space:normal;text-align:center;line-height:1.3}.fbtn-cd{font-size:8px;white-space:normal;text-align:center;line-height:1.2}.ftr{padding:16px 16px calc(12px + env(safe-area-inset-bottom))}.ftr-cats{grid-template-columns:1fr;gap:6px}.ftr-cat{display:flex;align-items:center;gap:10px;padding:8px 12px;text-align:left}.ftr-cat-count{font-size:18px;order:1}.ftr-cat-pill{margin-bottom:0;order:0}.ftr-cat-label{margin-top:0;order:2}.ftr-legend{gap:6px}.ftr-leg-item{font-size:8px}.hdr{padding:calc(18px + env(safe-area-inset-top)) 16px 8px}.tab-btn{padding:9px 10px;font-size:10px;min-height:44px}.ynav button,.ynav-btn{min-width:44px;min-height:44px}.back-btn{padding:8px 16px;font-size:10px;min-height:36px}.pg-btn{min-height:44px;padding:10px 18px}.cal-months{grid-template-columns:repeat(2,1fr);gap:10px}.cal-day{min-height:32px;font-size:11px}.cal-mo-name{font-size:11px}.cal-mo-ar{font-size:12px}.bis{font-size:16px}.ttl{font-size:22px}.qr{flex-direction:column;align-items:center;padding:0 8px}.mb{max-width:100%}.hadith-list{grid-template-columns:1fr}}
+/* iPhone touch: tap to toggle tooltip */
+@media(hover:none){.cal-day:hover .cal-tip{display:none}.cal-day.tip-active .cal-tip{display:block}}
+/* iPhone SE / Mini (≤390px) */
+@media(max-width:390px){.ttl{font-size:19px}.bis{font-size:14px}.sub{font-size:9px}.tab-bar{max-width:100%;padding:2px}.tab-btn{font-size:9px;padding:8px 6px}.ynum{font-size:18px}.yrng{font-size:8px}.filter-bar{grid-template-columns:1fr 1fr}.fbtn{padding:6px 4px;gap:2px;flex-direction:column}.fbtn-pill{font-size:6.5px;padding:2px 5px}.fbtn-date{font-size:8px;white-space:normal;line-height:1.2}.fbtn-cd{font-size:7px;white-space:normal;line-height:1.2}.cal-months{grid-template-columns:repeat(2,1fr);gap:8px}.cal-day{min-height:28px;font-size:10px}.hcard-ar{font-size:13px}.hcard-en{font-size:10px}}
+</style>
+</head>
+<body spellcheck="false">
+<div id="app"></div>
+<script>
+// ═══ DATA ═══
+var MS=[
+{en:"Muḥarram al-Ḥarām",ar:"محرم الحرام",c:"#8B2252",fa:"fa-hands-praying"},
+{en:"Ṣafar al-Muẓaffar",ar:"صفر المظفر",c:"#465259",fa:"fa-road"},
+{en:"Rabī al-Awwal",ar:"ربيع الاوّل",c:"#1e6e42",fa:"fa-seedling"},
+{en:"Rabī al-Ākhir",ar:"ربيع الآخر",c:"#257a4c",fa:"fa-leaf"},
+{en:"Jumādā al-Awwal",ar:"جمادى الاولى",c:"#2d6a96",fa:"fa-droplet"},
+{en:"Jumādā al-Ākhir",ar:"جمادى الآخر",c:"#3d7a7c",fa:"fa-water"},
+{en:"Rajab al-Murajjab",ar:"رجب المرجّب",c:"#1a5c3a",fa:"fa-mosque"},
+{en:"Sha'bān al-Karīm",ar:"شعبان الكريم",c:"#8a6e24",fa:"fa-sun"},
+{en:"Shahrullāh al-Mubārak",ar:"شهر الله المبارك",c:"#0e3d2e",fa:"fa-star-and-crescent"},
+{en:"Shawwāl al-Mukarram",ar:"شوّال المكرّم",c:"#655528",fa:"fa-cake-candles"},
+{en:"Dhul Qa'dah",ar:"ذى القعده",c:"#6B5B4A",fa:"fa-dove"},
+{en:"Dhul Ḥijjah",ar:"ذى الحجّه",c:"#163b50",fa:"fa-kaaba"}
+];
+var LP=new Set([2,5,7,10,13,16,18,21,24,26,29]);
+var SL=[30,29,30,29,30,29,30,29,30,29,30,29];
+var GM=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var DS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+var SGL=["First Thu","Middle Wed","Last Thu"];
+var SGLB=["We are currently in the first ten days of the month of ","We are currently in the middle ten days of the month of ","We are currently in the last ten days of the month of "];
+var SGD=["Thu","Wed","Thu"],SGC=["#7a6520","#7a6520","#7a6520"],SGU=["#f2ead4","#f2ead4","#f2ead4"],HBC="#7a6520";
+
+// ═══ HIJRI ENGINE ═══
+function il(y){return LP.has(((y-1)%30)+1)}
+function ml(y,m){return m===8?29:m===9?30:m===12&&il(y)?30:SL[m-1]}
+function hd(y,m,d){var yr=y-1,cy=Math.floor(yr/30),r=yr%30,ds=cy*10631;for(var i=0;i<r;i++)ds+=il(cy*30+i+1)?355:354;for(var i=1;i<m;i++)ds+=ml(y,i);return ds+d-1}
+var AC=hd(1447,10,1),AD_=new Date(2026,2,19);
+function h2g(y,m,d){var r=new Date(AD_);r.setDate(r.getDate()+hd(y,m,d)-AC);return r}
+function fg(d){return GM[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()}
+function fgs(d){return GM[d.getMonth()]+" "+d.getDate()}
+function rst(m){if(m===1)return new Set([10]);if(m===10)return new Set([1]);if(m===12)return new Set([10,11,12,13]);return new Set()}
+
+function cf(y,m){if(m===9)return null;var l=ml(y,m),r=rst(m),res=[];
+for(var d=1;d<=10;d++){if(r.has(d))continue;var g=h2g(y,m,d);if(g.getDay()===4){res.push({hDay:d,greg:g,seg:0});break}}
+var bw=null,bd=99;for(var d=11;d<=20;d++){if(r.has(d))continue;var g=h2g(y,m,d);if(g.getDay()===3){var dist=Math.abs(d-15);if(dist<bd){bd=dist;bw={hDay:d,greg:g,seg:1}}}}
+if(bw)res.push(bw);
+var lt=null;for(var d=21;d<=l;d++){if(r.has(d))continue;var g=h2g(y,m,d);if(g.getDay()===4)lt={hDay:d,greg:g,seg:2}}
+if(lt)res.push(lt);
+return res}
+
+function gch(){var t=new Date();t.setHours(0,0,0,0);for(var y=1446;y<=1480;y++)for(var m=1;m<=12;m++){var f=h2g(y,m,1),l=h2g(y,m,ml(y,m));f.setHours(0,0,0,0);l.setHours(23,59,59,999);if(t>=f&&t<=l)return{year:y,month:m,day:Math.round((t-f)/864e5)+1}}return{year:1447,month:10,day:11}}
+
+function fnxt(yd){var t=new Date();t.setHours(0,0,0,0);for(var i=0;i<yd.length;i++){var md=yd[i];if(!md.fasts)continue;for(var j=0;j<md.fasts.length;j++){var f=md.fasts[j],d=new Date(f.greg);d.setHours(0,0,0,0);if(d>=t)return{hDay:f.hDay,greg:f.greg,seg:f.seg,month:md.month}}}return null}
+
+function hbg(s,i){var deg=((i+1)/3)*360;return"conic-gradient("+SGC[s]+" 0deg "+deg+"deg,"+SGU[s]+" "+deg+"deg 360deg)"}
+
+function gcalUrl(f,mName){var d=f.greg,y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dy=String(d.getDate()).padStart(2,'0');var nd=new Date(d);nd.setDate(nd.getDate()+1);var y2=nd.getFullYear(),m2=String(nd.getMonth()+1).padStart(2,'0'),dy2=String(nd.getDate()).padStart(2,'0');var title=encodeURIComponent("Sunnah Fast \u2013 "+f.hDay+" "+mName);var det=encodeURIComponent(SGL[f.seg]+" of the Month ("+SGD[f.seg]+")\nSource: Da\u2019ā\u2019im al-Islām - Imām Ja\u2019far al-Ṣādiq");return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+title+"&dates="+y+m+dy+"/"+y2+m2+dy2+"&details="+det}
+
+
+function daysUntil(gd){var t=new Date();t.setHours(0,0,0,0);var d=new Date(gd);d.setHours(0,0,0,0);return Math.round((d-t)/864e5)}
+
+function fnxtBeed(){var t=new Date();t.setHours(0,0,0,0);for(var y=cur.year;y<=cur.year+1;y++){for(var m=1;m<=12;m++){if(m===8||m===9)continue;var bds=m===12?[14,15]:[13,14,15];for(var bi=0;bi<bds.length;bi++){var g=h2g(y,m,bds[bi]);var gd=new Date(g);gd.setHours(0,0,0,0);if(gd>=t)return{hDay:bds[bi],greg:g,month:m,year:y}}}}return null}
+
+function fnxtFardh(){var t=new Date();t.setHours(0,0,0,0);for(var y=cur.year;y<=cur.year+1;y++){var g1=h2g(y,9,1);var gd=new Date(g1);gd.setHours(0,0,0,0);if(gd>=t)return{hDay:1,greg:g1,month:9,year:y}}return null}
+
+// ═══ STATE ═══
+var year=1447, cur=gch(), activeTab='ahadith', activeFilter='all', filterPage=0;
+
+function getYearData(y){return Array.from({length:12},function(_,i){var m=i+1;return{month:m,fasts:cf(y,m),ml:ml(y,m),first:h2g(y,m,1),last:h2g(y,m,ml(y,m))}})}
+
+// ═══ GLOBAL CLICK HANDLERS (inline onclick for iOS Safari) ═══
+function doTabSwitch(tab){
+activeTab=tab;
+document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+var activeBtn=document.querySelector('.tab-btn[data-tab="'+tab+'"]');
+if(activeBtn)activeBtn.classList.add('active');
+var panel=document.getElementById('tab-'+tab);
+if(panel)panel.classList.add('active');
+document.querySelectorAll('.hdr-sub').forEach(function(s){s.style.display='none'});
+var hsub=document.getElementById('hdr-'+tab);
+if(hsub)hsub.style.display='';
+}
+function doYearNav(dir){year=Math.max(1400,Math.min(1500,year+dir));render()}
+function doYearBack(){year=cur.year;activeFilter='all';filterPage=0;render();goToCurrentMonth()}
+function doFilterClick(f){if(activeFilter===f)f='all';doFilter(f)}
+
+// ═══ RENDER ═══
+function render(){
+var yd=getYearData(year);
+var nf=fnxt(yd);
+var ts=yd.reduce(function(s,d){return s+(d.fasts?d.fasts.length:0)},0);
+var h='';
+
+// HEADER
+h+='<div class="hdr"><div class="hdr-pattern"></div>';
+h+='<div class="bis" contenteditable="true">أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ - بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
+h+='<div class="ttl" contenteditable="true">Ayyāmal <em>Ṣawm</em> <span style="font-size:14px;font-weight:300;opacity:.75;letter-spacing:.5px">- Days of Fasting</span></div>';
+h+='<div class="gd"></div>';
+
+// TAB BAR
+h+='<div class="tab-bar">';
+h+='<div class="tab-btn'+(activeTab==='ahadith'?' active':'')+'" data-tab="ahadith" onclick="doTabSwitch(\'ahadith\')"><i class="fa-solid fa-book-open" style="margin-right:4px;font-size:9px"></i>Aḥādīth al-Ṣawm</div>';
+h+='<div class="tab-btn'+(activeTab==='calview'?' active':'')+'" data-tab="calview" onclick="doTabSwitch(\'calview\')"><i class="fa-solid fa-table-cells" style="margin-right:4px;font-size:9px"></i>Year at a Glance</div>';
+h+='<div class="tab-btn'+(activeTab==='calendar'?' active':'')+'" data-tab="calendar" onclick="doTabSwitch(\'calendar\')"><i class="fa-solid fa-calendar-days" style="margin-right:4px;font-size:9px"></i>Monthly Detail</div>';
+h+='</div>';
+
+// ─── HEADER SUB-PANEL: Aḥādīth quotes (inside .hdr) ───
+h+='<div class="hdr-sub" id="hdr-ahadith" style="'+(activeTab==='ahadith'?'':'display:none')+'">';
+h+='<div class="gd-sub"></div>';
+h+='<div class="qr">';
+h+='<div class="mb"><div class="st">✦</div><div class="aq" contenteditable="true">ثَلاثَةُ أَيَّامٍ مِن كُلِّ شَهرٍ أَربِعَاءُ بَينَ خَمِيسَينِ</div><div class="eq" contenteditable="true">"Three days every month - a Wednesday between two Thursdays"</div><div class="rf" contenteditable="true">Imām Jaʿfar al-Ṣādiq · Da\'ā\'im al-Islām</div></div>';
+h+='<div class="mb"><div class="st">✦</div><div class="aq" contenteditable="true">مَن صَامَ ثَلاثَةَ أَيَّامٍ مِن كُلِّ شَهرٍ كَمَن صَامَ الدَّهرَ</div><div class="eq" contenteditable="true">"Whoever fasts three days every month - as if he fasted a lifetime"</div><div class="rf" contenteditable="true">Rasūlullāh · Qur\'ān 6:160</div></div>';
+h+='</div></div>';
+
+// ─── HEADER SUB-PANEL: Calendar info (inside .hdr) ───
+h+='<div class="hdr-sub" id="hdr-calendar" style="'+(activeTab==='calendar'?'':'display:none')+'">';
+h+='<div class="gd-sub"></div>';
+h+='<div class="sub" contenteditable="true"><b>30 Fardh Fasts</b> <span style="opacity:.7">(Shahrullāh al-Mubārak)</span>&ensp;•&ensp;<b>~60 Sunnah Fasts</b> <span style="opacity:.7">- 3 days × 10 months + Sha\'bān al-Karīm (29 days)</span></div>';
+h+='<div style="text-align:center;font-size:10px;color:rgba(255,255,255,.7);margin-top:6px;margin-bottom:6px">Today: <strong style="color:var(--g)">'+cur.day+' '+MS[cur.month-1].en+' '+cur.year+' Hijri</strong></div>';
+h+='<div class="ynav">';
+h+='<button id="yprev" onclick="doYearNav(-1)">◀</button>';
+h+='<div style="text-align:center"><div class="ynum">'+year+' <span>Hijri</span></div><div class="yrng">'+fg(yd[0].first)+' - '+fg(yd[11].last)+'</div></div>';
+h+='<button id="ynext" onclick="doYearNav(1)">▶</button>';
+h+='</div>';
+if(year!==cur.year) h+='<div style="text-align:center;margin-top:6px"><button class="back-btn" id="yback" onclick="doYearBack()">⟳ Back to Current Month of Current Hijri Year</button></div>';
+h+='</div>';
+
+// ─── HEADER SUB-PANEL: Calendar View (inside .hdr) ───
+h+='<div class="hdr-sub" id="hdr-calview" style="'+(activeTab==='calview'?'':'display:none')+'">';
+h+='<div class="gd-sub"></div>';
+h+='<div class="sub" contenteditable="true"><b>30 Fardh Fasts</b> <span style="opacity:.7">(Shahrullāh al-Mubārak)</span>&ensp;•&ensp;<b>~60 Sunnah Fasts</b> <span style="opacity:.7">- 3 days × 10 months + Sha\'bān al-Karīm (29 days)</span></div>';
+h+='<div style="text-align:center;font-size:10px;color:rgba(255,255,255,.7);margin-top:6px;margin-bottom:6px">Today: <strong style="color:var(--g)">'+cur.day+' '+MS[cur.month-1].en+' '+cur.year+' Hijri</strong></div>';
+h+='<div class="ynav">';
+h+='<button class="ynav-btn" onclick="doYearNav(-1)">◀</button>';
+h+='<div style="text-align:center"><div class="ynum">'+year+' <span>Hijri</span></div><div class="yrng">'+fg(yd[0].first)+' - '+fg(yd[11].last)+'</div></div>';
+h+='<button class="ynav-btn" onclick="doYearNav(1)">▶</button>';
+h+='</div>';
+if(year!==cur.year) h+='<div style="text-align:center;margin-top:4px"><button class="back-btn" onclick="doYearBack()">⟳ Back to Current Hijri Year</button></div>';
+h+='</div>';
+
+h+='</div>'; // closes .hdr
+
+// ═══ TAB 1: AHADITH ═══
+h+='<div class="tab-panel'+(activeTab==='ahadith'?' active':'')+'" id="tab-ahadith">';
+h+='<div class="od">✦ ✦ ✦</div>';
+h+='<div class="hadith-grid"><div class="hadith-list">';
+
+// Hadith 1
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">1</div><div class="hcard-title" contenteditable="true">Imām ʿAlī (AS): Shaʿbān & Ramaḍān as Expiation</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وقال علي صلوات الله عليه: كان رسول الله (صلع) يصوم شعبان ورمضان يصلهما، ويقول: هما شهرا الله. هما كفارة ما قبلهما وما بعدهما.</div>';
+h+='<div class="hcard-en" contenteditable="true">The Messenger of Allāh (ṢAWW) would fast Shaʿbān and Ramaḍān connecting them, saying: "They are the two months of Allāh. They are an expiation for what came before and after them."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> The spiritual weight of consecutive fasting.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 2
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">2</div><div class="hcard-title" contenteditable="true">Imām Jaʿfar al-Ṣādiq (AS): Fasting as Repentance</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعن جعفر بن محمد صلوات الله عليه أنه قال: صيام شعبان وشهر رمضان هما والله، توبة من الله. ثم قرأ: فصيام شهرين متتابعين توبة من الله.</div>';
+h+='<div class="hcard-en" contenteditable="true">Fasting Shaʿbān and Ramaḍān, they are, by Allāh, a repentance from Allāh. Then he recited: "Fasting two consecutive months as repentance from Allāh."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Links fasting to tawbah with Qur\u2019ānic tie-in.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 3
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">3</div><div class="hcard-title" contenteditable="true">Prophet (ṢAWW): Shaʿbān, Ayyāmal Bīḍ & Ṣawm Dāwūd</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعن رسول الله (صلع) أنه كان أكثر ما يصوم من الشهور شعبان. وكان يصوم حتى يقال لا يفطر، ويفطر حتى يقال لا يصوم، وكان ربما صام يوماً وأفطر يوماً، ويقول: هو أشد الصيام وهو صيام داود (ع)، وأنه كان كثيراً ما يصوم أيام البيض، وهي يوم ثلاثة عشر ويوم أربعة عشر ويوم النصف من الشهر. وكان ربما صام رجب</div>';
+h+='<div class="hcard-en" contenteditable="true">The Prophet (ṢAWW) fasted Shaʿbān the most. He would fast until it was said "he never breaks," and break until it was said "he never fasts." Sometimes he fasted alternate days, saying: "It is the most difficult fasting \u2014 the fasting of Dāwūd (AS)." He frequently fasted the Ayyāmal Bīḍ (13th, 14th, 15th). He would sometimes fast Rajab\u2026</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Three types in one ḥadīth: Shaʿbān fasting, Ṣawm Dāwūd (alternate days), Ayyāmal Bīḍ (13\u201315th).</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 4
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">4</div><div class="hcard-title" contenteditable="true">Imām Jaʿfar al-Ṣādiq (AS): Progressive Rewards of Fasting Rajab</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعن جعفر بن محمد (صلع) أنه قال: وذكر رجب، فقال: من صامه عاماً تباعدت عنه النار عامين، فإن صامه عامين تباعدت عنه النار عامين كذلك، حتى يصومه سبعاً، فإن صامه سبعاً غُلِقت عنه أبواب النيران السبعة، فإن صامه ثمانية فُتِحت له أبواب الجنة الثمانية، فإن صامه عشرة قيل له: استأنف العمل، ومن زاد زاده الله.</div>';
+h+='<div class="hcard-en" contenteditable="true">Mentioning Rajab: "Whoever fasts it 1 year \u2014 Fire distances 2 years. 2 years \u2014 likewise. 7 years \u2014 7 gates of Hellfire closed. 8 years \u2014 8 gates of Paradise opened. 10 years \u2014 \u2018Begin your deeds anew.\u2019 Whoever increases, Allāh increases."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Progressive reward structure, ideal for Harvey ball visualization.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 5 — FOUNDATIONAL
+h+='<div class="hcard foundational" style="grid-column:1/-1"><div class="hcard-head"><div class="hcard-num">5</div><div class="hcard-title" contenteditable="true">Imām Jaʿfar al-Ṣādiq (AS): The Thu / Wed / Thu Pattern</div><div class="hcard-badge">★ Foundational</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">رُوينا عن جعفر بن محمد أنه قال: وأما ما يلزم في كل سنة فصوم شهر معلوم وهو شهر رمضان، ومن الصوم سنة وهي مثلاً الفريضة، ثلاثة أيام من كل شهر، يوم من كل عشرة أيام، أربعاء بين خميسين، أول خميس يكون في أول الشهر والأربعاء الذي يكون أقرب إلى نصف الشهر، ثم الخميس الذي في آخر الشهر الذي لا يكون فيه خميس بعده، ويصوم شعبان، فذلك مثلاً الفريضة، يعني أنه يصوم من كل عشرة أشهر ثلاثين يوماً ويصوم شعبان. فذلك شهران.</div>';
+h+='<div class="hcard-en" contenteditable="true">From fasting there is Sunnah, like the obligatory: 3 days from every month, 1 day from every 10 \u2014 a Wednesday between two Thursdays: the first Thursday in the first of the month, the Wednesday closest to the middle, then the last Thursday after which there is no Thursday. And he fasts Shaʿbān. So that is like the obligatory \u2014 30 days from 10 months + Shaʿbān = 2 months.</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Primary source:</strong> Thu / Wed / Thu pattern. 3 days \u00d7 10 months = 30 + Shaʿbān = 2 months Sunnah/year.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 6
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">6</div><div class="hcard-title" contenteditable="true">Prophet (ṢAWW): 3 Days = Fasting the Entire Lifetime</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وروينا عنه عن آبائه عن رسول الله (صلع) أنه قال: من صام ثلاثة أيام من كل شهر كان كمن صام الدهر كله، لأن الله عز وجل يقول: من جاء بالحسنة فله عشر أمثالها</div>';
+h+='<div class="hcard-en" contenteditable="true">"Whoever fasts 3 days from every month is as if he fasted the entire lifetime, because Allāh says: \u2018Whoever brings a good deed shall have ten times the like thereof.\u2019" (Qur\u2019ān 6:160). 3 \u00d7 10 = 30 = continuous fasting.</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Qur\u2019ānic mathematical proof. 3 days/month = lifetime.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām / Qur\u2019ān 6:160</div></div></div>';
+
+// Hadith 7
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">7</div><div class="hcard-title" contenteditable="true">Imām al-Ṣādiq (AS): Fasting of ʿĀshūrāʾ \u2014 Three Cosmic Events</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعنه (ع) أنه قال: استوت السفينة يوم عاشوراء على الجودي، فأمر نوح (ع) من معه من الجن والإنس بصومه، وهو اليوم الذي تاب الله فيه على آدم، وهو اليوم الذي يقوم فيه قائمنا، أهل البيت.</div>';
+h+='<div class="hcard-en" contenteditable="true">"The Ark settled on ʿĀshūrāʾ on Jūdī. Nūḥ (AS) commanded all to fast. It is the day Allāh accepted Ādam\u2019s repentance, and the day our Qāʾim of Ahlul Bayt will rise." Three events: Nūḥ\u2019s salvation, Ādam\u2019s tawbah, the Qāʾim\u2019s rising.</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> ʿĀshūrāʾ connecting creation, salvation, and the awaited victory.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 8
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">8</div><div class="hcard-title" contenteditable="true">Imām ʿAlī (AS): Fasting on ʿArafah = Fasting the Lifetime</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعن علي (صلع) أنه قال: من صام يوم عرفة محتسباً فكأنما صام الدهر.</div>';
+h+='<div class="hcard-en" contenteditable="true">"Whoever fasts the Day of ʿArafah seeking reward, it is as if he fasted the entire lifetime."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Special day fast (9th Dhul Ḥijjah). Another lifetime-equivalence ḥadīth.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 9
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">9</div><div class="hcard-title" contenteditable="true">Imām al-Bāqir (AS): Exception for Those at ʿArafāt</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وسئل أبو جعفر محمد بن علي (صلع) عن صومه، فقال نحواً من ذلك، إلا أنه قال: إن خشى من شهد الموقف أن يضعفه الصوم عن الدعاء والمسألة والقيام، فلا يصمه. فإنه يوم دعاء ومسألة.</div>';
+h+='<div class="hcard-en" contenteditable="true">"If one present at ʿArafāt fears fasting will weaken him from supplication, asking, and standing \u2014 then he should not fast it. For it is a day of supplication and asking."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Nuanced fiqhī exception showing priority: duʿāʾ at ʿArafāt > fasting.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Hadith 10
+h+='<div class="hcard"><div class="hcard-head"><div class="hcard-num">10</div><div class="hcard-title" contenteditable="true">Prophet (ṢAWW): Shaʿbān Is My Month, Ramaḍān Is Allāh\u2019s</div></div>';
+h+='<div class="hcard-body"><div class="hcard-ar" contenteditable="true">وعنهم عن رسول الله (صلع) أنه قال: شعبان شهري، ورمضان شهر الله.</div>';
+h+='<div class="hcard-en" contenteditable="true">"Shaʿbān is my month, and Ramaḍān is the month of Allāh."</div>';
+h+='<div class="hcard-use" contenteditable="true"><strong>Infographic use:</strong> Header quote. Pairs with the Rajab ḥadīth.</div>';
+h+='<div class="hcard-src" contenteditable="true">Daʿāʾim al-Islām</div></div></div>';
+
+// Structural Insight
+h+='<div class="insight-card" style="grid-column:1/-1"><h3 contenteditable="true">Structural Insight: Namāz / Ṣawm Parallel</h3>';
+h+='<div style="font-size:10px;text-align:center;color:rgba(255,255,255,.6);margin-bottom:12px" contenteditable="true">From Daʿāʾim al-Islām \u2014 the 2:1 Farḍ-to-Sunnah ratio is identical in both Namāz and Ṣawm</div>';
+h+='<table class="insight-table"><thead><tr><th>Category</th><th>Namāz</th><th>Ṣawm</th><th>Ratio</th></tr></thead><tbody>';
+h+='<tr><td contenteditable="true"><span style="font-family:Amiri;font-size:13px">فرض</span> Farḍ</td><td contenteditable="true">17 rakaʿāt daily</td><td contenteditable="true">30 days (Ramaḍān)</td><td class="ratio">1\u00d7</td></tr>';
+h+='<tr><td contenteditable="true"><span style="font-family:Amiri;font-size:13px">سنت</span> Sunnah</td><td contenteditable="true">34 rakaʿāt daily</td><td contenteditable="true">~60 days (3/mo \u00d7 10 + Shaʿbān)</td><td class="ratio">2\u00d7</td></tr>';
+h+='<tr><td contenteditable="true"><span style="font-family:Amiri;font-size:13px">نافل</span> Nāfil</td><td contenteditable="true">Additional</td><td contenteditable="true">Rajab, Ayyāmal Bīḍ, Ṣawm Dāwūd</td><td class="ratio">Bonus</td></tr>';
+h+='</tbody></table></div>';
+
+h+='</div></div>';
+h+='</div>';
+
+// ═══ TAB 2: CALENDAR ═══
+h+='<div class="tab-panel'+(activeTab==='calendar'?' active':'')+'" id="tab-calendar">';
+
+// ORNAMENT
+h+='<div class="od">✦ ✦ ✦</div>';
+
+// FILTER BAR
+// Count fasts per category
+var cntFardh=30,cntSunnah=0,cntTatawwa=0;
+for(var ci=0;ci<12;ci++){var cmd=yd[ci];if(cmd.month===8||cmd.month===9)continue;if(cmd.fasts)cntSunnah+=cmd.fasts.length;}
+cntSunnah+=yd[7].ml; // Add all Sha'bān days (month 8, index 7)
+// Count tatawwa items (beed/jum/rajab/shw/dq29/dh/arafah/ghadir/muh2) — recompute from year data
+(function(){
+for(var ci2=0;ci2<12;ci2++){var md2=yd[ci2],m2=md2.month;if(m2===8||m2===9)continue;
+var sn2={};if(md2.fasts)md2.fasts.forEach(function(f){sn2[f.hDay]=true});
+var bDays=m2===12?[14,15]:[13,14,15];bDays.forEach(function(d){if(!sn2[d])cntTatawwa++});
+// jumu'ah
+var rs2=rst(m2),tk2={};if(md2.fasts)md2.fasts.forEach(function(f){tk2[f.hDay]=true});
+bDays.forEach(function(d){tk2[d]=true});
+for(var fd2=1;fd2<=md2.ml;fd2++){if(rs2.has(fd2)||tk2[fd2])continue;var gd2=h2g(year,m2,fd2);if(gd2.getDay()===5)cntTatawwa++;}
+if(m2===1&&!sn2[2])cntTatawwa++;
+if(m2===7){if(!sn2[1])cntTatawwa++;if(!sn2[27])cntTatawwa++;}
+if(m2===10){for(var sw2=2;sw2<=7;sw2++){if(!sn2[sw2])cntTatawwa++;}}
+if(m2===11&&!sn2[29])cntTatawwa++;
+if(m2===12){for(var dh2=1;dh2<=8;dh2++){if(!sn2[dh2])cntTatawwa++;}if(!sn2[9])cntTatawwa++;if(!sn2[18])cntTatawwa++;}
+}})();
+// Compute next dates for countdowns
+var nfSunnah=fnxt(yd),nfTatawwa=fnxtBeed(),nfFardh=fnxtFardh();
+var cdFardh=nfFardh?daysUntil(nfFardh.greg):-1;
+var cdSunnah=nfSunnah?daysUntil(nfSunnah.greg):-1;
+var cdTatawwa=nfTatawwa?daysUntil(nfTatawwa.greg):-1;
+function cdTxt(d){return d===0?'Today':d===1?'Tomorrow':d+' days away'}
+var isCurYr=year===cur.year;
+h+='<div class="nfc"><div class="filter-bar">';
+// All Categories
+h+='<div class="fbtn'+(activeFilter==='all'?' active':'')+'" data-filter="all" onclick="doFilterClick(\'all\')">';
+h+='<div class="fbtn-pill" style="background:rgba(212,175,95,.6)"><i class="fa-solid fa-layer-group" style="margin-right:3px;font-size:7px"></i>All</div>';
+var cntAll=cntFardh+cntSunnah+cntTatawwa;
+h+='<div class="fbtn-date">'+cntAll+' fasts</div>';
+h+='</div>';
+// Tatawwa'
+h+='<div class="fbtn'+(activeFilter==='tatawwa'?' active':'')+'" data-filter="tatawwa" onclick="doFilterClick(\'tatawwa\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-tatawwa"><i class="fa-solid fa-circle" style="margin-right:3px;font-size:7px"></i>Next Tatawwa\u2019</div>';
+if(nfTatawwa){h+='<div class="fbtn-date">'+DS[nfTatawwa.greg.getDay()]+', '+fgs(nfTatawwa.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdTatawwa)+'</strong> · '+cntTatawwa+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-tatawwa"><i class="fa-solid fa-circle" style="margin-right:3px;font-size:7px"></i>Tatawwa\u2019</div>';
+h+='<div class="fbtn-date">'+cntTatawwa+' fasts</div>';
+}
+h+='</div>';
+// Sunnah
+h+='<div class="fbtn'+(activeFilter==='sunnah'?' active':'')+'" data-filter="sunnah" onclick="doFilterClick(\'sunnah\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-sunnah"><i class="fa-solid fa-star" style="margin-right:3px;font-size:7px"></i>Next Sunnah</div>';
+if(nfSunnah){h+='<div class="fbtn-date">'+DS[nfSunnah.greg.getDay()]+', '+fgs(nfSunnah.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdSunnah)+'</strong> · '+cntSunnah+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-sunnah"><i class="fa-solid fa-star" style="margin-right:3px;font-size:7px"></i>Sunnah</div>';
+h+='<div class="fbtn-date">'+cntSunnah+' fasts</div>';
+}
+h+='</div>';
+// Fardh
+h+='<div class="fbtn'+(activeFilter==='fardh'?' active':'')+'" data-filter="fardh" onclick="doFilterClick(\'fardh\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-fardh"><i class="fa-solid fa-moon" style="margin-right:3px;font-size:7px"></i>Next Fardh</div>';
+if(nfFardh){h+='<div class="fbtn-date">'+DS[nfFardh.greg.getDay()]+', '+fgs(nfFardh.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdFardh)+'</strong> · '+cntFardh+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-fardh"><i class="fa-solid fa-moon" style="margin-right:3px;font-size:7px"></i>Fardh</div>';
+h+='<div class="fbtn-date">'+cntFardh+' fasts</div>';
+}
+h+='</div>';
+h+='</div></div>';
+
+// MONTH GRID
+h+='<div class="ca"><div class="mg">';
+for(var mi=0;mi<12;mi++){
+var md=yd[mi],info=MS[mi],ic=year===cur.year&&md.month===cur.month,ir=md.month===9,ish=md.month===8;
+var typeClass=ir?' fardh':ish?' sunnah':'';
+h+='<div class="mc'+(ic?' cur':'')+typeClass+'" style="border-top:3px solid '+info.c+'">';
+if(ic) h+='<div class="nb">Current</div>';
+h+='<div class="ch"><div class="chl">';
+h+='<div class="mnum" style="background:'+info.c+'">'+md.month+'</div>';
+var isFaqah=md.month===1||md.month===10||md.month===12;
+var isFNA=md.month===12;
+var tbadge=ir?'<div class="badge-row"><span class="type-badge fardh-badge">Fardh</span></div>':ish?'<div class="badge-row"><span class="type-badge sunnah-badge">Sunnah</span></div>':isFNA?'<div class="badge-row"><span class="type-badge sunnah-badge">Sunnah</span><span class="type-badge tatawwa-badge">Tatawwa\'</span><span class="type-badge faqah-badge">Faqah</span><span class="type-badge fna-badge">Not Allowed</span></div>':isFaqah?'<div class="badge-row"><span class="type-badge sunnah-badge">Sunnah</span><span class="type-badge tatawwa-badge">Tatawwa\'</span><span class="type-badge faqah-badge">Faqah</span></div>':'<div class="badge-row"><span class="type-badge sunnah-badge">Sunnah</span><span class="type-badge tatawwa-badge">Tatawwa\'</span></div>';
+var leapTag=(md.month===12&&il(year))?' <span style="color:#00838f;font-weight:700">(Leap Year)</span>':'';
+h+='<div class="mname"><div class="mname-row"><span class="men" contenteditable="true">'+info.en+'</span><span class="mar" contenteditable="true" style="color:'+info.c+'">'+info.ar+'</span></div><div style="font-size:9px;color:#666;font-weight:500;line-height:1.2" contenteditable="true">'+fgs(md.first)+' – '+fgs(md.last)+', '+md.ml+' days'+leapTag+'</div>'+tbadge+'</div>';
+h+='</div>';
+h+='<div class="cic" style="background:linear-gradient(135deg,'+info.c+'18,'+info.c+'28);color:'+info.c+'"><i class="fa-solid '+info.fa+'"></i></div>';
+h+='</div>';
+h+='<div class="fi">';
+if(ir){
+h+='<div class="fr-whole" data-fcat="fardh" style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px"><div style="text-align:left"><div contenteditable="true" style="color:#14713a;font-family:Inter,sans-serif;font-size:13px;font-weight:600">• Fardh Fasts for Entire Month</div></div></div>';
+}else if(ish){
+h+='<div class="fr-whole" data-fcat="sunnah" style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px"><div style="text-align:left"><div contenteditable="true" style="color:#7a6520;font-family:Inter,sans-serif;font-size:13px;font-weight:600">• Sunnah Fasts for Entire Month</div><div contenteditable="true" style="color:#7a6520;font-family:Inter,sans-serif;font-size:13px;font-weight:600;margin-top:4px">• In particular, 15th Sha\u2019bān al-Karīm</div></div></div>';
+}else{
+// Build combined list of sunnah fasts + restricted days, sorted by Hijri day
+var items=[];
+if(md.fasts){for(var fi=0;fi<md.fasts.length;fi++){var f=md.fasts[fi];items.push({type:'sunnah',hDay:f.hDay,greg:f.greg,seg:f.seg,beed:false})}}
+var snSet={};if(md.fasts)md.fasts.forEach(function(f){snSet[f.hDay]=true});
+if(md.month===1){items.push({type:'nf',hDay:10,greg:h2g(year,1,10),label:'\u2018Āshūrā',note:'Break Faqah after Zawāl'});if(!snSet[2])items.push({type:'muh2',hDay:2,greg:h2g(year,1,2)})}
+if(md.month===10){items.push({type:'nf',hDay:1,greg:h2g(year,10,1),label:'Eid-al-Fi\u1E6Dr',note:'Break Faqah before Eid prayers'});for(var sw=2;sw<=7;sw++){if(!snSet[sw])items.push({type:'shw',hDay:sw,greg:h2g(year,10,sw)})}}
+if(md.month===7){if(!snSet[1])items.push({type:'rajab1',hDay:1,greg:h2g(year,7,1)});if(!snSet[27])items.push({type:'rajab27',hDay:27,greg:h2g(year,7,27)})}
+if(md.month===11){if(!snSet[29])items.push({type:'dq29',hDay:29,greg:h2g(year,11,29)})}
+if(md.month===12){for(var dh=1;dh<=8;dh++){if(!snSet[dh])items.push({type:'dh19',hDay:dh,greg:h2g(year,12,dh)})}if(!snSet[9])items.push({type:'arafah',hDay:9,greg:h2g(year,12,9)});items.push({type:'nf',hDay:10,greg:h2g(year,12,10),label:'Eid-al-A\u1E0D\u1E25\u0101',note:'Break Faqah after Eid prayers and Zabīḥat'});[11,12,13].forEach(function(d){items.push({type:'fna',hDay:d,greg:h2g(year,12,d),label:'Tashrīq',beed:d===13})});if(!snSet[18])items.push({type:'ghadir',hDay:18,greg:h2g(year,12,18)})}
+// Ayyāmal Bīḍ — Sunnah trumps Tatawwa': merge overlaps, keep standalone otherwise
+var beedDays=md.month===12?[14,15]:[13,14,15];
+var sunnahDays={};items.forEach(function(it){if(it.type==='sunnah')sunnahDays[it.hDay]=it});
+beedDays.forEach(function(d){if(sunnahDays[d]){sunnahDays[d].beed=true}else{items.push({type:'beed',hDay:d,greg:h2g(year,md.month,d),rajab:md.month===7})}});
+// Jumu'ah (Friday) Tatawwa' fasts — every Friday, pair with preceding Thu or upcoming Sat
+var rstSet=rst(md.month);
+var takenDays={};items.forEach(function(it){takenDays[it.hDay]=true});
+for(var fd=1;fd<=md.ml;fd++){if(rstSet.has(fd)||takenDays[fd])continue;var fg2=h2g(year,md.month,fd);if(fg2.getDay()===5){var cThu=!rstSet.has(fd-1),cSat=!rstSet.has(fd+1);var pn=cThu&&cSat?'Pair with preceding Thu / upcoming Sat':cThu?'Pair with preceding Thu':cSat?'Pair with upcoming Sat':'';items.push({type:'jum',hDay:fd,greg:fg2,pairNote:pn})}}
+// Tag Friday overlaps — mark non-jum items that fall on Friday
+items.forEach(function(it){if(it.type!=='jum'&&it.type!=='nf'&&it.type!=='fna'&&it.greg&&it.greg.getDay()===5)it.isJum=true});
+items.sort(function(a,b){return a.hDay-b.hDay});
+// Tag contiguous groups for connector lines (exclude fna/nf — no linking for Not Allowed or Faqah rows)
+for(var ci=0;ci<items.length;ci++){
+var ok=items[ci].type!=='fna'&&items[ci].type!=='nf';
+var pOk=ci>0&&items[ci-1].type!=='fna'&&items[ci-1].type!=='nf';
+var pt=ok&&pOk&&ci>0&&items[ci].hDay===items[ci-1].hDay+1;
+var nOk=ci<items.length-1&&items[ci+1].type!=='fna'&&items[ci+1].type!=='nf';
+var nt=ok&&nOk&&ci<items.length-1&&items[ci+1].hDay===items[ci].hDay+1;
+items[ci].gp=pt&&nt?'mid':pt?'last':nt?'first':'solo';
+}
+// Build overlap Tatawwa' tags for every item
+items.forEach(function(it){
+var tags=[],d=it.hDay,m=md.month,dow=it.greg?it.greg.getDay():-1;
+if([13,14,15].indexOf(d)!==-1&&it.type!=='beed')tags.push('Ayyāmal Bīḍ – The White Days');
+if(dow===5&&it.type!=='jum'&&it.type!=='nf'){tags.push('Jumu\u2019ah Fast');if(it.type!=='fna'){var pThu=!rstSet.has(d-1),pSat=!rstSet.has(d+1);it.pairNote=pThu&&pSat?'Pair with preceding Thu / upcoming Sat':pThu?'Pair with preceding Thu':pSat?'Pair with upcoming Sat':'';}}
+if(m===7&&d===1&&it.type!=='rajab1')tags.push('1 Rajab Fast');
+if(m===7&&d===27&&it.type!=='rajab27')tags.push('27 Rajab Fast');
+if(m===1&&d===2&&it.type!=='muh2')tags.push('Like Zakariyy\u0101 Fast');
+if(m===10&&d>=2&&d<=7&&it.type!=='shw')tags.push('Shaww\u0101l 2\u20137 Fast');
+if(m===11&&d===29&&it.type!=='dq29')tags.push('Nuz\u016bl al-Ka\u2019bah Fast');
+if(m===12&&d>=1&&d<=8&&it.type!=='dh19')tags.push('1\u20138 Dhul \u1E24ijjah Fast');
+if(m===12&&d===9&&it.type!=='arafah')tags.push('Yawm \u2018Arafah');
+if(m===12&&d===18&&it.type!=='ghadir')tags.push('Eid-al-Ghad\u012br');
+it.ovTags=tags;
+});
+if(items.length>0){
+var tot=items.length;
+for(var ii=0;ii<items.length;ii++){
+var it=items[ii],num=ii+1,deg=((num)/tot)*360;
+// Connector line between contiguous Harvey balls
+var gp=it.gp||'solo',connHtml='',frSty='';
+if(gp!=='solo'){
+var clr=it.type==='fna'?'#b22828':it.type==='sunnah'?'#7a6520':it.type==='nf'?'#7b2d8e':'#1a5276';
+var ct=gp==='first'?'50%':'0',cb=gp==='last'?'50%':'0';
+connHtml='<div style="position:absolute;left:12px;width:2px;background:'+clr+';opacity:.3;top:'+ct+';bottom:'+cb+';z-index:1;pointer-events:none;border-radius:1px"></div>';
+frSty='position:relative;'+(gp!=='last'?'border-bottom-color:transparent;':'');
+}
+var ovStr=it.ovTags&&it.ovTags.length>0?' \u00b7 ('+it.ovTags.join(') \u00b7 (')+')':'';
+var pnHtml=it.pairNote?'<div style="font-size:8px;font-style:italic;color:#1a5276;opacity:.7;margin-top:1px" contenteditable="true">'+it.pairNote+'</div>':'';
+var ovLine=it.ovTags&&it.ovTags.length>0?'<div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">('+it.ovTags.join(') \u00b7 (')+')</div>':'';
+var fcat=it.type==='sunnah'?'sunnah':it.type==='nf'?'faqah':it.type==='fna'?'notallowed':'tatawwa';
+if(it.type==='sunnah'){
+h+='<div class="fr" data-fcat="sunnah" style="'+frSty+'" data-gcal="'+gcalUrl(it,info.en).replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient('+SGC[it.seg]+' 0deg '+deg+'deg,'+SGU[it.seg]+' '+deg+'deg 360deg)"><div class="in" style="color:'+SGC[it.seg]+'">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:'+SGC[it.seg]+'">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div><div style="margin-top:2px"><span class="sg" contenteditable="true" style="background:'+SGC[it.seg]+'">'+SGL[it.seg]+'</span></div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:'+SGC[it.seg]+'">'+it.hDay+' '+info.en+'</div>'+ovLine+'</div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='beed'){
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+gcalUrl({hDay:it.hDay,greg:it.greg,seg:1},info.en).replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Ayyāmal Bīḍ – The White Days)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='jum'){
+var jUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Jumu\u2019ah Fast \u2013 '+it.hDay+' '+info.en)+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Jumu\u2019ah Tatawwa\u2019 Fast\n'+(it.pairNote||'')+'\nSource: Da\u2019\u0101\u2019im al-Isl\u0101m');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+jUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+(it.pairNote?'<div style="font-size:8px;font-style:italic;color:#1a5276;opacity:.7;margin-top:1px" contenteditable="true">'+it.pairNote+'</div>':'')+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Jumu\'ah Fast)</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='ghadir'){
+var ghUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Eid-al-Ghadīr Fast \u2013 18 '+info.en)+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Eid-al-Ghadīr Tatawwa\u2019 Fast\n18 Dhul Ḥijjah');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+ghUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Eid-al-Ghadīr)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='muh2'){
+var m2Url='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Tatawwa\u2019 Fast \u2013 2 Mu\u1E25arram al-\u1E24ar\u0101m')+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Du\u2019\u0101 at Ift\u0101r accepted like that of Zakariyy\u0101 (\u2018alayhis sal\u0101m)');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+m2Url.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Like Zakariyyā Fast)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='shw'){
+var swUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(it.hDay+' Shaww\u0101l Tatawwa\u2019 Fast')+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Shaww\u0101l Tatawwa\u2019 Fast (2\u20137 Shaww\u0101l)\nReward of fasting for a lifetime');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+swUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Shawwāl 2–7 Fast)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='dq29'){
+var dqUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Nuz\u016bl al-Ka\u2019bah Fast \u2013 29 Dhul Qa\u2019dah')+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Tatawwa\u2019 Fast \u2013 Nuz\u016bl al-Ka\u2019bah\n29 Dhul Qa\u2019dah');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+dqUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Nuz\u016bl al-Ka\u2019bah Fast)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='dh19'){
+var dhUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Dhul \u1E24ijjah Fast \u2013 '+it.hDay+' '+info.en)+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Tatawwa\u2019 Fast \u2013 1\u20139 Dhul \u1E24ijjah\nExpiation of sins');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+dhUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(1\u20138 Dhul \u1E24ijjah Fast)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='arafah'){
+var arUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Yawm \u2018Arafah Fast \u2013 9 '+info.en)+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Yawm \u2018Arafah Tatawwa\u2019 Fast\n9 Dhul \u1E24ijjah\nLike fasting for a lifetime\nRepentance of D\u0101w\u016bd (\u2018alayhis sal\u0101m) accepted on this day');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+arUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">(Yawm \u2018Arafah)'+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='rajab1'||it.type==='rajab27'){
+var rjLbl=it.type==='rajab1'?'(1 Rajab Fast)':'(27 Rajab Fast)';
+var rjUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(rjLbl+' \u2013 '+it.hDay+' '+info.en)+'&dates='+it.greg.getFullYear()+String(it.greg.getMonth()+1).padStart(2,'0')+String(it.greg.getDate()).padStart(2,'0')+'/'+(function(d){var n=new Date(d);n.setDate(n.getDate()+1);return n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0')})(it.greg)+'&details='+encodeURIComponent('Tatawwa\u2019 Fast \u2013 '+it.hDay+' Rajab al-Murajjab');
+h+='<div class="fr" data-fcat="tatawwa" style="'+frSty+'" data-gcal="'+rjUrl.replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#1a5276 0deg '+deg+'deg,#d4e4f0 '+deg+'deg 360deg)"><div class="in" style="color:#1a5276">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#1a5276">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#1a5276">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#1a5276;font-style:italic;margin-top:1px">'+rjLbl+ovStr+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else if(it.type==='fna'){
+h+='<div class="fr" data-fcat="notallowed" style="'+frSty+'" data-gcal="'+gcalUrl({hDay:it.hDay,greg:it.greg,seg:1},info.en).replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#b22828 0deg '+deg+'deg,#f2d0d0 '+deg+'deg 360deg)"><div class="in" style="color:#b22828">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#b22828">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+pnHtml+'</div>';
+var fnaOv=it.ovTags&&it.ovTags.length>0?' \u00b7 <span style="color:#1a5276">('+it.ovTags.join(') \u00b7 (')+')</span>':'';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#b22828">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#b22828;font-style:italic;margin-top:1px">(Ayyāmal Tashrīq)'+fnaOv+'</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}else{
+h+='<div class="fr" data-fcat="faqah" style="'+frSty+'" data-gcal="'+gcalUrl({hDay:it.hDay,greg:it.greg,seg:1},info.en).replace(/"/g,'&quot;')+'" title="Click to add to Google Calendar">';
+h+=connHtml;
+h+='<div class="hb" style="background:conic-gradient(#7b2d8e 0deg '+deg+'deg,#eedcf2 '+deg+'deg 360deg)"><div class="in" style="color:#7b2d8e">'+num+'</div></div>';
+h+='<div class="finfo"><div class="fh" contenteditable="true" style="color:#7b2d8e">'+DS[it.greg.getDay()]+', '+fgs(it.greg)+'</div>'+(it.note?'<div style="font-size:8px;font-style:italic;color:#7b2d8e;opacity:.8;margin-top:1px" contenteditable="true">'+it.note+'</div>':'')+'</div>';
+h+='<div class="fgi"><div class="fday" contenteditable="true" style="color:#7b2d8e">'+it.hDay+' '+info.en+'</div><div class="fday" contenteditable="true" style="color:#7b2d8e;font-style:italic;margin-top:1px">('+it.label+')</div></div>';
+h+='<div class="gcal-icon"><i class="fa-solid fa-calendar-plus"></i></div>';
+h+='</div>';
+}
+}
+}else{
+h+='<div style="text-align:center;color:#ddd;font-size:10px;padding:12px 0">-</div>';
+}
+}
+h+='</div></div>';
+}
+h+='</div></div>';
+// Pagination controls (shown only when filtered)
+h+='<div class="pg-wrap"><div class="pg-bar" id="pg-bar" style="display:none"></div></div>';
+h+='</div>'; // close tab-calendar
+
+// ═══ TAB 3: CALENDAR VIEW ═══
+h+='<div class="tab-panel'+(activeTab==='calview'?' active':'')+'" id="tab-calview">';
+h+='<div class="od">✦ ✦ ✦</div>';
+// Filter bar (synced with Tab 2 — full metadata)
+h+='<div class="nfc"><div class="filter-bar">';
+h+='<div class="fbtn'+(activeFilter==='all'?' active':'')+'" data-filter="all" onclick="doFilterClick(\'all\')">';
+h+='<div class="fbtn-pill" style="background:rgba(212,175,95,.6)"><i class="fa-solid fa-layer-group" style="margin-right:3px;font-size:7px"></i>All</div>';
+h+='<div class="fbtn-date">'+cntAll+' fasts</div>';
+h+='</div>';
+h+='<div class="fbtn'+(activeFilter==='tatawwa'?' active':'')+'" data-filter="tatawwa" onclick="doFilterClick(\'tatawwa\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-tatawwa"><i class="fa-solid fa-circle" style="margin-right:3px;font-size:7px"></i>Next Tatawwa\u2019</div>';
+if(nfTatawwa){h+='<div class="fbtn-date">'+DS[nfTatawwa.greg.getDay()]+', '+fgs(nfTatawwa.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdTatawwa)+'</strong> · '+cntTatawwa+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-tatawwa"><i class="fa-solid fa-circle" style="margin-right:3px;font-size:7px"></i>Tatawwa\u2019</div>';
+h+='<div class="fbtn-date">'+cntTatawwa+' fasts</div>';
+}
+h+='</div>';
+h+='<div class="fbtn'+(activeFilter==='sunnah'?' active':'')+'" data-filter="sunnah" onclick="doFilterClick(\'sunnah\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-sunnah"><i class="fa-solid fa-star" style="margin-right:3px;font-size:7px"></i>Next Sunnah</div>';
+if(nfSunnah){h+='<div class="fbtn-date">'+DS[nfSunnah.greg.getDay()]+', '+fgs(nfSunnah.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdSunnah)+'</strong> · '+cntSunnah+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-sunnah"><i class="fa-solid fa-star" style="margin-right:3px;font-size:7px"></i>Sunnah</div>';
+h+='<div class="fbtn-date">'+cntSunnah+' fasts</div>';
+}
+h+='</div>';
+h+='<div class="fbtn'+(activeFilter==='fardh'?' active':'')+'" data-filter="fardh" onclick="doFilterClick(\'fardh\')">';
+if(isCurYr){
+h+='<div class="fbtn-pill fp-fardh"><i class="fa-solid fa-moon" style="margin-right:3px;font-size:7px"></i>Next Fardh</div>';
+if(nfFardh){h+='<div class="fbtn-date">'+DS[nfFardh.greg.getDay()]+', '+fgs(nfFardh.greg)+'</div>';
+h+='<div class="fbtn-cd"><strong>'+cdTxt(cdFardh)+'</strong> · '+cntFardh+' total</div>';}
+}else{
+h+='<div class="fbtn-pill fp-fardh"><i class="fa-solid fa-moon" style="margin-right:3px;font-size:7px"></i>Fardh</div>';
+h+='<div class="fbtn-date">'+cntFardh+' fasts</div>';
+}
+h+='</div>';
+h+='</div></div>';
+// Build day→category map for each month
+h+='<div class="cal-grid"><div class="cal-months">';
+for(var cmi=0;cmi<12;cmi++){
+var cmd3=yd[cmi],m3=cmd3.month,cinfo=MS[cmi];
+// Build category map: day → {cat, label, tip}
+var dayMap={};
+if(m3===9){
+// Ramaḍān: all days are fardh
+for(var rd=1;rd<=cmd3.ml;rd++) dayMap[rd]={cat:'fardh',tip:'Fardh Fast – '+rd+' Shahrullāh al-Mubārak'};
+}else if(m3===8){
+// Sha'bān: all days are sunnah
+for(var sd=1;sd<=cmd3.ml;sd++) dayMap[sd]={cat:'sunnah',tip:'Sunnah Fast – '+sd+' Sha\u2019bān al-Karīm'};
+}else{
+// Sunnah fasts (Thu/Wed/Thu)
+if(cmd3.fasts) cmd3.fasts.forEach(function(f){
+dayMap[f.hDay]={cat:'sunnah',tip:SGL[f.seg]+' – '+DS[f.greg.getDay()]+', '+fgs(f.greg)};
+});
+// Restricted / Faqah days
+var rstDays3=rst(m3);
+if(m3===1) dayMap[10]={cat:'faqah',tip:'\u2018Āshūrā – Break Faqah after Zawāl'};
+if(m3===10) dayMap[1]={cat:'faqah',tip:'Eid-al-Fi\u1E6Dr – Break Faqah'};
+if(m3===12){dayMap[10]={cat:'faqah',tip:'Eid-al-A\u1E0D\u1E25ā – Break Faqah'};[11,12,13].forEach(function(td){dayMap[td]={cat:'notallowed',tip:'Ayyāmal Tashrīq – Fasting Not Allowed'}});}
+// Tatawwa': Ayyāmal Bīḍ
+var beed3=m3===12?[14,15]:[13,14,15];
+beed3.forEach(function(bd){if(!dayMap[bd]) dayMap[bd]={cat:'tatawwa',tip:'Ayyāmal Bīḍ – The White Days'};});
+// Tatawwa': special days
+if(m3===1&&!dayMap[2]) dayMap[2]={cat:'tatawwa',tip:'Like Zakariyyā Fast'};
+if(m3===7){if(!dayMap[1]) dayMap[1]={cat:'tatawwa',tip:'1 Rajab Fast'};if(!dayMap[27]) dayMap[27]={cat:'tatawwa',tip:'27 Rajab Fast'};}
+if(m3===10){for(var sw3=2;sw3<=7;sw3++){if(!dayMap[sw3]) dayMap[sw3]={cat:'tatawwa',tip:'Shawwāl 2–7 Fast'};}}
+if(m3===11&&!dayMap[29]) dayMap[29]={cat:'tatawwa',tip:'Nuzūl al-Ka\u2019bah Fast'};
+if(m3===12){for(var dh3=1;dh3<=8;dh3++){if(!dayMap[dh3]) dayMap[dh3]={cat:'tatawwa',tip:(dh3)+' Dhul Ḥijjah Fast'};}if(!dayMap[9]) dayMap[9]={cat:'tatawwa',tip:'Yawm \u2018Arafah'};if(!dayMap[18]) dayMap[18]={cat:'tatawwa',tip:'Eid-al-Ghadīr'};}
+// Jumu'ah (Friday) tatawwa'
+var tk3={};for(var k in dayMap) tk3[k]=true;
+for(var fd3=1;fd3<=cmd3.ml;fd3++){if(rstDays3.has(fd3)||tk3[fd3])continue;var gd3=h2g(year,m3,fd3);if(gd3.getDay()===5) dayMap[fd3]={cat:'tatawwa',tip:'Jumu\u2019ah Fast'};}
+}
+// Render mini calendar
+var isC3=year===cur.year&&m3===cur.month;
+h+='<div class="cal-mo" style="border-top-color:'+cinfo.c+'">';
+h+='<div class="cal-mo-hd"><div><div class="cal-mo-name">'+cmd3.month+'. '+cinfo.en+' <span class="cal-mo-ar" style="color:'+cinfo.c+'">'+cinfo.ar+'</span></div><div class="cal-mo-range">'+fgs(cmd3.first)+' – '+fgs(cmd3.last)+', '+cmd3.ml+' days</div></div></div>';
+h+='<div class="cal-dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>';
+h+='<div class="cal-days">';
+// Empty cells before the 1st
+var dow1=cmd3.first.getDay(); // 0=Sun
+for(var ei=0;ei<dow1;ei++) h+='<div class="cal-day empty"></div>';
+// Day cells
+for(var d3=1;d3<=cmd3.ml;d3++){
+var dm=dayMap[d3],isToday=isC3&&d3===cur.day;
+var cls='cal-day';
+if(dm){cls+=' has-fast cat-'+dm.cat;if(dm.cat==='sunnah'&&m3===8) cls+=' cat-sunnah-whole';}
+if(isToday) cls+=' today-mark';
+if(dm) cls+=' cv-'+dm.cat;
+h+='<div class="'+cls+'" data-ccat="'+(dm?dm.cat:'')+'">';
+h+=d3;
+if(dm){
+var catColors={fardh:'#14713a',sunnah:'#7a6520',tatawwa:'#1a5276',faqah:'#7b2d8e',notallowed:'#b22828'};
+var catNames={fardh:'Fardh',sunnah:'Sunnah',tatawwa:'Tatawwa\u2019',faqah:'Faqah',notallowed:'Not Allowed'};
+var gd4=h2g(year,m3,d3);
+h+='<div class="cal-tip">';
+// Category badge removed per user preference — color on the day cell itself indicates category
+h+='<div class="tip-name">'+dm.tip+'</div>';
+h+='<div class="tip-date">'+d3+' '+cinfo.en+' '+year+' · '+DS[gd4.getDay()]+', '+fg(gd4)+'</div>';
+h+='</div>';
+}
+h+='</div>';
+}
+// Pad to 42 cells (6 rows) so all months are same height
+var totalCells=dow1+cmd3.ml;
+while(totalCells<42){h+='<div class="cal-day empty"></div>';totalCells++;}
+h+='</div></div>';
+}
+h+='</div></div>';
+h+='</div>'; // close tab-calview
+
+// FOOTER
+h+='<div class="ftr"><div class="ftr-pattern"></div><div class="ftr-inner">';
+h+='<div style="width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);margin:0 auto 12px"></div>';
+// Attribution row
+h+='<div class="ftr-attr-row">';
+h+='<div class="ftr-attr">Compiled by <strong>Nasrullāh Ḥusamī</strong></div>';
+h+='<div class="ftr-dot">\u00b7</div>';
+var gToday=new Date();
+h+='<div class="ftr-attr">'+cur.day+' '+MS[cur.month-1].en+' <strong>'+cur.year+' Hijri</strong></div>';
+h+='<div class="ftr-dot">\u00b7</div>';
+h+='<div class="ftr-attr">'+GM[gToday.getMonth()]+' '+gToday.getDate()+', <strong>'+gToday.getFullYear()+'</strong></div>';
+h+='</div>';
+h+='</div></div>';
+
+document.getElementById('app').innerHTML=h;
+
+// Google Calendar links (kept as addEventListener — these are <div> rows, not buttons)
+document.querySelectorAll('.fr[data-gcal]').forEach(function(el){
+el.addEventListener('click',function(){if(el.classList.contains('fdim'))return;window.open(el.getAttribute('data-gcal'),'_blank')});
+});
+// Touch tooltip toggle for iPhone/mobile (no hover)
+document.querySelectorAll('.cal-day[data-ccat]').forEach(function(d){
+d.addEventListener('click',function(e){
+var wasActive=d.classList.contains('tip-active');
+document.querySelectorAll('.cal-day.tip-active').forEach(function(x){x.classList.remove('tip-active')});
+if(!wasActive) d.classList.add('tip-active');
+e.stopPropagation();
+});
+});
+document.addEventListener('click',function(){document.querySelectorAll('.cal-day.tip-active').forEach(function(x){x.classList.remove('tip-active')})});
+// Apply filter + pagination after re-render
+doFilter(activeFilter);
+}
+
+// GLOBAL filter function — lives outside render() so it's defined once
+function doFilter(f){
+activeFilter=f;
+filterPage=0;
+// Update button active states
+document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('active')});
+var ab=document.querySelector('.fbtn[data-filter="'+f+'"]');
+if(ab)ab.classList.add('active');
+// Show/hide individual fast rows via inline style
+document.querySelectorAll('.fr[data-fcat],.fr-whole[data-fcat]').forEach(function(r){
+r.style.display=(f==='all'||r.getAttribute('data-fcat')===f)?'':'none';
+});
+// Mark each month card as filter-visible or filter-hidden via data attribute
+// Whole-month cards (Ramaḍān=fardh, Sha'bān=sunnah)
+document.querySelectorAll('.mc.fardh,.mc.sunnah').forEach(function(c){
+if(f==='all'){c.setAttribute('data-fvis','1')}
+else{
+var show=(f==='fardh'&&c.classList.contains('fardh'))||(f==='sunnah'&&c.classList.contains('sunnah'));
+c.setAttribute('data-fvis',show?'1':'0');
+}
+});
+// Regular month cards — visible if they have at least one matching row
+document.querySelectorAll('.mc:not(.fardh):not(.sunnah)').forEach(function(c){
+if(f==='all'){c.setAttribute('data-fvis','1')}
+else{
+var hasVis=false;
+c.querySelectorAll('.fr[data-fcat]').forEach(function(r){if(r.style.display!=='none')hasVis=true});
+c.setAttribute('data-fvis',hasVis?'1':'0');
+}
+});
+applyPagination();
+// Calendar view filter: dim non-matching days
+document.querySelectorAll('.cal-day[data-ccat]').forEach(function(d){
+var cc=d.getAttribute('data-ccat');
+if(f==='all'){d.classList.remove('cal-fdim')}
+else{
+d.classList.toggle('cal-fdim',cc!==''&&cc!==f);
+// Also dim empty-category days when filter active
+if(cc==='') d.classList.add('cal-fdim');
+}
+});
+}
+
+function applyPagination(){
+var allCards=document.querySelectorAll('.mg .mc');
+// Collect filter-visible cards
+var visCards=[];
+allCards.forEach(function(c){
+if(c.getAttribute('data-fvis')==='0'){c.style.display='none';return}
+visCards.push(c);
+});
+// Dynamic page size: 6 cards (2 rows) per page, unless only a few cards
+var pageSize=6;
+var totalPages=Math.max(1,Math.ceil(visCards.length/pageSize));
+if(filterPage>=totalPages) filterPage=totalPages-1;
+if(filterPage<0) filterPage=0;
+var start=filterPage*pageSize, end=start+pageSize;
+visCards.forEach(function(c,i){
+c.style.display=(i>=start&&i<end)?'':'none';
+});
+// Update pagination bar
+var pgBar=document.getElementById('pg-bar');
+if(pgBar){
+if(totalPages<=1){pgBar.style.display='none';return}
+pgBar.style.display='flex';
+var ph='';
+if(filterPage>0) ph+='<div class="pg-btn" id="pg-prev"><i class="fa-solid fa-chevron-left"></i> Previous Page</div>';
+ph+='<div class="pg-info">Page '+(filterPage+1)+' of '+totalPages+'</div>';
+if(filterPage<totalPages-1) ph+='<div class="pg-btn" id="pg-next">Next Page <i class="fa-solid fa-chevron-right"></i></div>';
+pgBar.innerHTML=ph;
+var pp=document.getElementById('pg-prev'),pn=document.getElementById('pg-next');
+if(pp) pp.addEventListener('click',function(){filterPage--;applyPagination();window.scrollTo({top:document.querySelector('.filter-bar').offsetTop-10,behavior:'smooth'})});
+if(pn) pn.addEventListener('click',function(){filterPage++;applyPagination();window.scrollTo({top:document.querySelector('.filter-bar').offsetTop-10,behavior:'smooth'})});
+}
+}
+
+function goToCurrentMonth(){
+var allCards=document.querySelectorAll('.mg .mc');
+var visCards=[];
+var curIdx=-1;
+allCards.forEach(function(c,i){
+if(c.getAttribute('data-fvis')==='0') return;
+if(c.classList.contains('cur')) curIdx=visCards.length;
+visCards.push(c);
+});
+if(curIdx<0) return;
+var pageSize=6;
+filterPage=Math.floor(curIdx/pageSize);
+applyPagination();
+}
+
+render();
+</script>
+</body>
+</html>
